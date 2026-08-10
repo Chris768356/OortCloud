@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <h2>Cloud von {{current_user.username}}</h2>
+{% endblock header %}
+
+{% block content %}
+
+    <form action="{{url_for('dashboard.upload')}}" method="post" enctype="multipart/form-data">
+        <input type="file" name="uploaded_file" id="uploaded_file">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit">Upload</button>
+    </form>
+    <p>
+        Belegter Speicher: {{ ((current_user.files | sum(attribute='file_size')) / 1000 / 1000) | round(2) }} MB / {{ (config["USER_QUOTA"] / 1000 /1000) | round(2)}} MB
+    </p>
+
+    {% if current_user.files %}
+
+
+
+            {% for data in current_user.files  %}
+                <ul>
+                    <li>{{data.original_filename}}</li>
+                    <li>{{(data.file_size /1000 /1000) | round(2)}} MB</li>
+                    <li><a href="{{url_for('dashboard.download', file_uuid = data.file_uuid)}}">Download</a></li>
+                    <li>
+                        <form action="{{ url_for('dashboard.delete', file_uuid = data.file_uuid) }}" method="POST" onsubmit=" return confirm('Datei wirklich löschen?')" >
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                            <button type="submit">Löschen</button>
+                        </form>
+                    </li>
+                </ul>    
+            {% endfor %}
+            
+    {% else %}
+        <p>Es sind noch keine Daten vorhanden.</p>
+    {% endif %}
+    
+    
+    
+{% endblock content %}

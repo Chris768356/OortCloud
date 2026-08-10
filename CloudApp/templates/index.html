@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block header %}
+    <h2>Wilkommen auf OortCloud</h2>
+{% endblock header %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <p>Wilkommen {{current_user.username}}! Hier geht es zu deinem <a href="{{url_for('dashboard.dashboard')}}">Dashboard</a></p>    
+    {% else %}
+        <p>Hier zum <a href="{{url_for('auth.login')}}">Login</a> oder hier <a href="{{ url_for('auth.register') }}">Registrieren</a></p>
+    {% endif %}
+    
+{% endblock content %}
+ 

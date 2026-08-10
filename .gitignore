@@ -1,0 +1,43 @@
+# =========================
+# Virtual Environment
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# Python Cache & Bytecode
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# =========================
+# Flask & Datenbank
+# =========================
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# CloudApp: User Uploads
+# =========================
+
+uploads/
+cloud_data/
+
+# =========================
+# Environment Variables & Secrets
+# =========================
+.env
+.flaskenv
+
+# =========================
+# OS & IDEs
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
