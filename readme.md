@@ -14,7 +14,6 @@ OortCloud ist eine hochsichere, minimalistische Cloud-Speicher-Webapplikation. S
 ## ✨ Features
 
 * **Sichere Datei-Isolierung:** Jeder Nutzer erhält ein physisch getrenntes Verzeichnis auf dem Server. Die Auslieferung erfolgt maskiert über UUIDv4-Token – physische Dateipfade werden niemals an den Client gesendet (Schutz vor IDOR-Angriffen).
-* **Smartes Dashboard:** Übersichtliche Darstellung des Speicherkontingents, dynamische Datei-Icons (via Font Awesome) und Größenberechnung in Echtzeit.
 * **Account-Management:** Sichere Authentifizierung, gehashte Passwörter (Werkzeug Security) und eine DSGVO-konforme Löschfunktion (Automatisches Cascading in der Datenbank + vollständige physische Bereinigung des Nutzerverzeichnisses).
 * **Admin-Panel:** Rollenbasiertes Zugriffssystem (RBAC) zur Verwaltung von Nutzern und System-Ressourcen.
 * **Sicherheits-Fokus:** Implementierung strenger OWASP-Richtlinien (CSP, X-Frame-Options, Cache-Control, Dateinamen-Sanitization).
