@@ -6,7 +6,7 @@
 
 {% block content %}
     <form action="" method="post">
-        <input type="text" name="email" id="email" placeholder="Email Adresse" required>
+        <input type="text" name="login" id="login" placeholder="E-Mail Adresse oder Benutzername" required>
         <input type="password" name="password" id="password" placeholder="Passwort" required>
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <button type="submit">Login</button>

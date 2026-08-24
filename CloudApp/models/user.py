@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     directory_uuid = db.Column(db.String(50), unique = True)
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc), onupdate = lambda: datetime.now(timezone.utc))
-    files = db.relationship('File', backref='user')
+    files = db.relationship('File', backref='user', cascade="all, delete-orphan")
 
     def set_password(self, password):
         """Hasht das Klartext-Passwort und speichert es in der Instanz."""

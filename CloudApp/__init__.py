@@ -75,7 +75,10 @@ def create_app(test_config=None):
     app.register_blueprint(auth_bp, url_prefix="/auth")
     from CloudApp.routes.dashboard import dashboard_bp
     app.register_blueprint(dashboard_bp, url_prefix = "/dashboard")
+    from CloudApp.routes.profile import profile_bp
+    app.register_blueprint(profile_bp, url_prefix = "/profile")
 
+    
     from CloudApp.models.user import User
     from CloudApp.models.file import File
 

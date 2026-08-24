@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect , url_for
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash 
 from werkzeug.datastructures import ImmutableMultiDict
+from CloudApp.services.validate import validate_email, validate_password, check_mail, check_user
 from CloudApp.extensions import limiter, db
 from CloudApp.models.user import User
 from functools import wraps
@@ -11,32 +12,6 @@ import os
 
 auth_bp = Blueprint("auth",__name__)
 
-EMAIL_REGEX = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-PASSWORD_REGEX = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$"
-
-def validate_password(password):
-    '''Validiert das Passwort'''
-    if re.match(PASSWORD_REGEX, password):
-        return True
-    return False
-
-def validate_email(email):
-    '''Validiert die Email Adresse'''
-    if re.match(EMAIL_REGEX, email):
-        return True
-    return False
-
-def check_user(username):
-        '''Prüft ob der Nutzername schon vergeben ist'''
-        stmt = db.select(User).filter_by(username=username)
-        check = db.session.execute(stmt).first() is not None
-        return check
-
-def check_mail(email):
-        '''Prüft ob die Email Adresse schon vergeben ist'''
-        stmt = db.select(User).filter_by(email = email)
-        check = db.session.execute(stmt).first() is not None
-        return check
 
 def logout_required(f):
     @wraps(f)
@@ -104,9 +79,13 @@ def register():
         elif password != password_check:
             flash("Die eingegebenen Passwörter stimmen nicht überein", "error")
             return render_template("auth/register.html", form_data = form_data) 
-                
+        
+        elif check_user(username):
+            flash("Dieser Benutzername ist bereits vergeben.", "error")
+            return render_template("auth/register.html", form_data=form_data)
+        
         else:
-            
+        
             if check_user(username) or check_mail(email):
                 generate_password_hash(password)
             
@@ -134,10 +113,13 @@ def login():
     '''Loggt einen Benutzer ein'''
 
     if request.method == "POST":
-        email = request.form.get("email").strip()
+        login = request.form.get("login").strip()
         password = request.form.get("password")
-
-        stmt = db.select(User).filter_by(email = email)
+        if '@' in login:
+            stmt = db.select(User).filter_by(email = login)
+        else:
+            stmt = db.select(User).filter_by(username = login)
+        
         user = db.session.execute(stmt).scalar()
         
         if user:

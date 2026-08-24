@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <h2>Profil von {{current_user.username}}</h2>
+{% endblock header %}  
+
+{% block content %}
+    <ul>
+        <li>Benutzername: {{current_user.username}}</li>
+        <li>E-Mail: {{current_user.email}}</li>
+    </ul>
+    <a href="">Benutzername ändern</a>
+    <a href="">E-Mail Adresse ändern</a>
+    <a href="">Passswort ändern</a>
+
+    <form action="" method="POST">
+        <button type="submit"
+                onclick="if(!confirm('Bist du sicher? Dieser Schritt kann nicht rückgängig gemacht werden und alle deine Dateien werden gelöscht.')) { event.preventDefault(); return false; }">
+                Account endgültig löschen
+        </button>
+    </form>
+{% endblock content %}
