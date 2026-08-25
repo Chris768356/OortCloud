@@ -6,21 +6,13 @@ from CloudApp.services.validate import validate_email, validate_password, check_
 from CloudApp.extensions import limiter, db
 from CloudApp.models.user import User
 from functools import wraps
+from CloudApp.services.utils import logout_required
 import re
 import uuid
 import os
 
 auth_bp = Blueprint("auth",__name__)
 
-
-def logout_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if current_user.is_authenticated:
-            flash("Sie sind bereits eingeloggt.", "info")
-            return redirect(url_for('index'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 @auth_bp.route("/register", methods=["GET","POST"])
@@ -88,11 +80,14 @@ def register():
         
             if check_user(username) or check_mail(email):
                 generate_password_hash(password)
+                #Wenn die E-Mail vergeben ist, Nachricht versenden um auf den registrier versuch aufmerksam zu machen
             
             else:
+                agb = True
+                dsgvo = True
                 base_path = current_app.config.get("BASE_UPLOAD_FOLDER")
                 directory_id = uuid.uuid4().hex
-                new_user = User(username = username, email = email, directory_uuid = directory_id)
+                new_user = User(username = username, email = email, directory_uuid = directory_id, agb_accepted = agb, dsgvo_accepted = dsgvo)
                 new_user.set_password(password)
                 db.session.add(new_user)
                 path = os.path.join(base_path, directory_id)
@@ -137,7 +132,7 @@ def login():
 @auth_bp.route("/logout")
 @login_required
 def logout():
-    '''Loggt eine Benutzer aus'''
+    '''Loggt einen Benutzer aus'''
     logout_user()
     flash("Sie haben sich erfolgreich abgemeldet!")
     return redirect(url_for("index"))

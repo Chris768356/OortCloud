@@ -1,3 +1,4 @@
+from flask import flash 
 from CloudApp.models.user import User
 from CloudApp.extensions import db
 import re

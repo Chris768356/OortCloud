@@ -14,6 +14,9 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc), onupdate = lambda: datetime.now(timezone.utc))
     files = db.relationship('File', backref='user', cascade="all, delete-orphan")
+    dsgvo_accepted = db.Column(db.Boolean, default = False)
+    agb_accepted = db.Column(db.Boolean, default = False)
+    is_admin = db.Column(db.Boolean, default = False)
 
     def set_password(self, password):
         """Hasht das Klartext-Passwort und speichert es in der Instanz."""

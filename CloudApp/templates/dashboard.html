@@ -12,14 +12,14 @@
         <button type="submit">Upload</button>
     </form>
     <div>
-        Belegter Speicher: {{ ((current_user.files | sum(attribute='file_size')) / 1024 / 1024) | round(2) }} MB / {{ (config["USER_QUOTA"] / 1024 /1024) | round(2)}} MB
+        Belegter Speicher: {{ ((current_user.files | sum(attribute='file_size')) / 1000 / 1000) | round(2) }} MB / {{ (config["USER_QUOTA"] / 1000 /1000) | round(2)}} MB
     </div>
 
     {% if current_user.files %}
             {% for data in current_user.files  %}
                 <ul>
                     <li>{{data.original_filename}}</li>
-                    <li>{{(data.file_size /1024 /1024) | round(2)}} MB</li>
+                    <li>{{(data.file_size /1000 /1000) | round(2)}} MB</li>
                     <li><a href="{{url_for('dashboard.download', file_uuid = data.file_uuid)}}">Download</a></li>
                     <li>
                         <form action="{{ url_for('dashboard.delete', file_uuid = data.file_uuid) }}" method="POST" onsubmit="return confirm('Datei wirklich löschen?')" >
