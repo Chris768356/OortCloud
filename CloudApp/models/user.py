@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     dsgvo_accepted = db.Column(db.Boolean, default = False)
     agb_accepted = db.Column(db.Boolean, default = False)
     is_admin = db.Column(db.Boolean, default = False)
+    is_locked = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         """Hasht das Klartext-Passwort und speichert es in der Instanz."""
@@ -32,4 +33,10 @@ def load_user(user_id):
     Flask-Login ruft diese Funktion bei jedem Seitenaufruf im Hintergrund auf.
     Es übergibt die ID aus dem Cookie (als String) und erwartet das User-Objekt.
     """
-    return db.session.get(User, int(user_id))
+    user = User.query.get(int(user_id))
+     
+    if user and user.is_locked:
+        return None
+        
+    return user
+   

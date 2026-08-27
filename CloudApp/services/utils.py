@@ -19,3 +19,18 @@ def logout_required(f):
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_function
+
+def format_bytes(size):
+    if not size:
+        return "0 Bytes"
+        
+    size = float(size)
+    units = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    index = 0
+    
+    while size >= 1000 and index < len(units) - 1:
+        size /= 1000.0
+        index += 1
+        
+    return f"{round(size, 2)} {units[index]}"
+

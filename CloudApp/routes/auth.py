@@ -119,6 +119,10 @@ def login():
         
         if user:
             if user.check_password(password):
+                if user.is_locked:
+                    flash("Dein Account wurde vom Administrator gesperrt. Bitte kontaktiere den Support.", "error")
+                    return redirect(url_for('auth.login'))
+            
                 login_user(user)
                 return redirect(url_for("dashboard.dashboard"))
             else: 

@@ -3,7 +3,7 @@ from flask import Flask , render_template, flash, redirect , url_for, request
 from werkzeug.exceptions import RequestEntityTooLarge
 from CloudApp.extensions import db, csrf, login_manager, limiter, migrate
 from flask_wtf.csrf import CSRFError
-
+from CloudApp.services.utils import format_bytes
 
 
 def create_app(test_config=None):
@@ -17,7 +17,9 @@ def create_app(test_config=None):
         app.config.from_pyfile('config.py', silent=False)
     else:
         app.config.from_mapping(test_config)
-    
+        
+    app.jinja_env.filters['format_bytes'] = format_bytes
+
     db.init_app(app)
     login_manager.init_app(app)
     csrf.init_app(app)
@@ -38,7 +40,6 @@ def create_app(test_config=None):
         response.headers['X-XSS-Protection'] = '1; mode=block'
         response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
         response.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline';"
-
         # Erst aktivieren, wenn Server wirklich ein SSL-Zertifikat hat!
         # HSTS (Strict-Transport-Security): Zwingt den Browser, für 1 Jahr nur noch HTTPS zu nutzen
         # response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
@@ -77,7 +78,8 @@ def create_app(test_config=None):
     app.register_blueprint(dashboard_bp, url_prefix = "/dashboard")
     from CloudApp.routes.profile import profile_bp
     app.register_blueprint(profile_bp, url_prefix = "/profile")
-
+    from CloudApp.routes.admin import admin_bp
+    app.register_blueprint(admin_bp, url_prefix = "/admin")
     
     from CloudApp.models.user import User
     from CloudApp.models.file import File

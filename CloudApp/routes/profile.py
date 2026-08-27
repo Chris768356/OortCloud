@@ -134,7 +134,6 @@ def delete_profile():
         try:
             shutil.rmtree(directory_path)
         except OSError as e:
-            # current_app.logger.error(f"Dateisystem-Fehler bei User {current_user.username}: {e}")
             flash("Ein serverseitiger Fehler ist aufgetreten. Deine Dateien konnten nicht gelöscht werden.", "error")
             session['edit_mode'] = 'delete'
             return redirect(url_for('profile.show_profile'))

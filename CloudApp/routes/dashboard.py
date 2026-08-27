@@ -56,7 +56,7 @@ def upload():
             final_used_memory = file_size + used_user_memory
 
             if final_used_memory > max_user_memory:
-                flash(f"Sie haben zu wenig verfügbaren Speicherplatz! {(final_used_memory / 1024 / 1024):.2f}MB / {(max_user_memory / 1024 / 1024):.2f}MB", "error")
+                flash(f"Sie haben zu wenig verfügbaren Speicherplatz! {(final_used_memory / 1000 / 1000):.2f}MB / {(max_user_memory / 1000 / 1000):.2f}MB", "error")
                 
             else:
                 file.save(upload_folder)
