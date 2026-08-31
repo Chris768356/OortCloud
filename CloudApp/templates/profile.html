@@ -5,76 +5,106 @@
 {% endblock header %}  
 
 {% block content %}
-    {% if edit_mode == "username" %}
-        <p>Bitte einen neuen Nutzernamen angeben.</p>
-        <form action="{{url_for('profile.change_username')}}" method="post">
-            <input type="text" name="username" id="username" placeholder="Neuer Benutzername">
-            <input type="text" name="confirm-username" id="confirm-username" placeholder="Benutzernamen bestätigen">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <button type="submit">Benutzername ändern</button>
-        </form>
-        <a href="{{url_for('profile.show_profile')}}">abbrechen</a> 
+<div class="auth-container">
+    <div class="auth-form">
+        {% if edit_mode == "username" %}
+            <p class="profile-hint">Bitte einen neuen Nutzernamen angeben.</p>
+            <form action="{{url_for('profile.change_username')}}" method="post" class="profile-form">
+                <div class="form-group">
+                    <input type="text" name="username" id="username" placeholder="Neuer Benutzername" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="confirm-username" id="confirm-username" placeholder="Benutzernamen bestätigen" class="form-input" required>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <button type="submit" class="btn btn-primary btn-full">Benutzername ändern</button>
+            </form>
+            <a href="{{url_for('profile.show_profile')}}" class="profile-cancel">Abbrechen</a> 
 
-    {% elif edit_mode == "mail" %}
-        <p>Bitte eine neue E-Mail Adresse angeben.</p>
-        <form action="{{url_for('profile.change_email')}}" method="post">
-            <input type="email" name="mail" id="mail" placeholder="E-Mail Adresse">
-            <input type="email" name="confirm-mail" id="confirm-mail" placeholder="E-Mail Adresse bestätigen">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <button type="submit">E-Mail Adresse ändern</button>
-        </form>
-        <a href="{{url_for('profile.show_profile')}}">abbrechen</a>
+        {% elif edit_mode == "mail" %}
+            <p class="profile-hint">Bitte eine neue E-Mail-Adresse angeben.</p>
+            <form action="{{url_for('profile.change_email')}}" method="post" class="profile-form">
+                <div class="form-group">
+                    <input type="email" name="mail" id="mail" placeholder="E-Mail-Adresse" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="confirm-mail" id="confirm-mail" placeholder="E-Mail-Adresse bestätigen" class="form-input" required>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <button type="submit" class="btn btn-primary btn-full">E-Mail-Adresse ändern</button>
+            </form>
+            <a href="{{url_for('profile.show_profile')}}" class="profile-cancel">Abbrechen</a>
 
-    {% elif edit_mode == "password" %}
-        <p>Bitte ein neues Passwort eingeben.</p>
-        <form action="{{url_for('profile.change_password')}}" method="post">
-            <input type="password" name="old-password" id="old_password" placeholder="Aktuelles Passwort">
-            <input type="password" name="password" id="password" placeholder="Passwort">
-            <input type="password" name="confirm-password" id="confirm-password" placeholder="Passwort bestätigen">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <button type="submit">Passwort ändern</button>
-        </form>
-        <a href="{{url_for('profile.show_profile')}}">abbrechen</a>
+        {% elif edit_mode == "password" %}
+            <p class="profile-hint">Bitte ein neues Passwort eingeben.</p>
+            <form action="{{url_for('profile.change_password')}}" method="post" class="profile-form">
+                <div class="form-group">
+                    <input type="password" name="old-password" id="old_password" placeholder="Aktuelles Passwort" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="password" placeholder="Neues Passwort" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirm-password" id="confirm-password" placeholder="Passwort bestätigen" class="form-input" required>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <button type="submit" class="btn btn-primary btn-full">Passwort ändern</button>
+            </form>
+            <a href="{{url_for('profile.show_profile')}}" class="profile-cancel">Abbrechen</a>
 
-    {% elif edit_mode == "delete" %}
-        <p>Wollen Sie wirklich ihren Account löschen ? Alle ihre gespeicherten Daten gehen dadurch verloren.</p>
-        <p>Bitte bestätigen Sie die löschung mit ihrem Passwort.</p>
-        <form action="{{url_for('profile.delete_profile')}}" method="post">
-            <input type="password" name="password" id="password" placeholder="Passwort">
-            <input type="password" name="confirm-password" id="confirm-password" placeholder="Passwort bestätigen">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <button type="submit">Account endgültig Löschen!</button>
-        </form>
-        <a href="{{url_for('profile.show_profile')}}">abbrechen</a>
+        {% elif edit_mode == "delete" %}
+            <p class="profile-hint profile-danger-hint">Wollen Sie wirklich Ihren Account löschen? Alle Ihre gespeicherten Daten gehen dadurch unwiderruflich verloren.</p>
+            <p class="profile-hint">Bitte bestätigen Sie die Löschung mit Ihrem Passwort.</p>
+            <form action="{{url_for('profile.delete_profile')}}" method="post" class="profile-form">
+                <div class="form-group">
+                    <input type="password" name="password" id="password" placeholder="Passwort" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirm-password" id="confirm-password" placeholder="Passwort bestätigen" class="form-input" required>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <button type="submit" class="btn btn-danger btn-full">Account endgültig löschen</button>
+            </form>
+            <a href="{{url_for('profile.show_profile')}}" class="profile-cancel">Abbrechen</a>
 
-    {% else %}
-        <ul>
-            <li>Benutzername: {{current_user.username}}</li>
-            <li>E-Mail: {{current_user.email}}</li>
-        </ul>
-        <form action="{{ url_for('profile.set_edit_mode') }}" method="POST" style="display:inline;">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <input type="hidden" name="mode" value="username">
-            <button type="submit" class="btn-link">Benutzername ändern</button>
-        </form>
+        {% else %}
+            <div class="profile-info-box">
+                <div class="profile-info-row">
+                    <span class="profile-label">Benutzername:</span>
+                    <span class="profile-value">{{current_user.username}}</span>
+                </div>
+                <div class="profile-info-row">
+                    <span class="profile-label">E-Mail:</span>
+                    <span class="profile-value">{{current_user.email}}</span>
+                </div>
+            </div>
 
-        <form action="{{ url_for('profile.set_edit_mode') }}" method="POST" style="display:inline;">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <input type="hidden" name="mode" value="mail">
-            <button type="submit" class="btn-link">E-Mail Adresse ändern</button>
-        </form>
+            <div class="profile-actions-grid">
+                <form action="{{ url_for('profile.set_edit_mode') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="mode" value="username">
+                    <button type="submit" class="btn btn-outline btn-full">Benutzername ändern</button>
+                </form>
 
-        <form action="{{ url_for('profile.set_edit_mode') }}" method="POST" style="display:inline;">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <input type="hidden" name="mode" value="password">
-            <button type="submit" class="btn-link">Passwort ändern</button>
-        </form>
-            
-        <form action="{{ url_for('profile.set_edit_mode') }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-            <input type="hidden" name="mode" value="delete">
-            <button type="submit" class="btn-link">Account löschen</button>
-        </form>
-    {% endif %}
-    
+                <form action="{{ url_for('profile.set_edit_mode') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="mode" value="mail">
+                    <button type="submit" class="btn btn-outline btn-full">E-Mail ändern</button>
+                </form>
+
+                <form action="{{ url_for('profile.set_edit_mode') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="mode" value="password">
+                    <button type="submit" class="btn btn-outline btn-full">Passwort ändern</button>
+                </form>
+                    
+                <form action="{{ url_for('profile.set_edit_mode') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                    <input type="hidden" name="mode" value="delete">
+                    <button type="submit" class="btn btn-danger btn-full">Account löschen</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}

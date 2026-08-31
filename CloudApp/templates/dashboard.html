@@ -5,35 +5,54 @@
 {% endblock header %}
 
 {% block content %}
+<div class="dashboard-container">
 
-    <form action="{{url_for('dashboard.upload')}}" method="post" enctype="multipart/form-data">
-        <input type="file" name="uploaded_file" id="uploaded_file">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-        <button type="submit">Upload</button>
-    </form>
-    <div>
-        Belegter Speicher: {{ ((current_user.files | sum(attribute='file_size')) / 1000 / 1000) | round(2) }} MB / {{ (config["USER_QUOTA"] / 1000 /1000) | round(2)}} MB
+    <div class="upload-section">
+        <form class="upload-form" action="{{url_for('dashboard.upload')}}" method="post" enctype="multipart/form-data">
+            <input type="file" name="uploaded_file" id="uploaded_file" class="file-input">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        
+        <div class="storage-section">
+                <div class="storage-info">
+            <span>Speicherplatz</span>
+            <span>
+                <strong>{{ ((current_user.files | sum(attribute='file_size')) / 1000 / 1000) | round(2) }} MB</strong> 
+                / {{ (config["USER_QUOTA"] / 1000 / 1000) | round(2)}} MB
+            </span>
+        </div>
+    
+    <!-- Die Fortschrittsleiste -->
+    <div class="progress-bar-container">
+        {% set total_quota = config["USER_QUOTA"] / 1000 / 1000 %}
+        {% set used_space = (current_user.files | sum(attribute='file_size')) / 1000 / 1000 %}
+        {% set percent = (used_space / total_quota * 100) if total_quota > 0 else 0 %}
+        
+        <!-- style="width: {{ percent }}%" steuert den Füllstand dynamisch -->
+        <div class="progress-bar-fill" style="width: {{ percent | round(1) }}%;"></div>
+    </div>
+</div>
     </div>
 
-    {% if current_user.files %}
-            {% for data in current_user.files  %}
-                <ul>
-                    <li>{{data.original_filename}}</li>
-                    <li>{{(data.file_size /1000 /1000) | round(2)}} MB</li>
-                    <li><a href="{{url_for('dashboard.download', file_uuid = data.file_uuid)}}">Download</a></li>
-                    <li>
-                        <form action="{{ url_for('dashboard.delete', file_uuid = data.file_uuid) }}" method="POST" onsubmit="return confirm('Datei wirklich löschen?')" >
+    <div class="file-list-container">
+        {% if current_user.files %}
+            {% for data in current_user.files %}
+                <ul class="file-item">
+                    <li class="file-name">{{data.original_filename}}</li>
+                    <li class="file-size">{{(data.file_size /1000 /1000) | round(2)}} MB</li>
+                    <li class="file-actions">
+                        <a href="{{url_for('dashboard.download', file_uuid = data.file_uuid)}}" class="btn btn-outline">Download</a>
+                        <form action="{{ url_for('dashboard.delete', file_uuid = data.file_uuid) }}" method="POST" onsubmit="return confirm('Datei wirklich löschen?')" class="inline-form">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                            <button type="submit" onclick="if(!confirm('Bist du sicher?')) { event.preventDefault(); return false; }">Löschen</button>
+                            <button type="submit" class="btn btn-danger">Löschen</button>
                         </form>
                     </li>
                 </ul>    
             {% endfor %}
-            
-    {% else %}
-        <p>Es sind noch keine Daten vorhanden.</p>
-    {% endif %}
-    
-    
-    
+        {% else %}
+            <p class="empty-state">Es sind noch keine Daten in deiner OortCloud vorhanden.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock content %}

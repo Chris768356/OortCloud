@@ -72,6 +72,12 @@ def create_app(test_config=None):
     def dsgvo():
         return render_template("dsgvo.html")
 
+    @app.route("/contact")
+    def contact():
+        return render_template("contact.html")
+    @app.route("/impressum")
+    def impressum():
+        return render_template("impressum.html")
     from CloudApp.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix="/auth")
     from CloudApp.routes.dashboard import dashboard_bp

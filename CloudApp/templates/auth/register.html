@@ -5,23 +5,39 @@
 {% endblock header %}
 
 {% block content %}
-    <form action="" method="post">
-        <input type="text" name="username" id="username" placeholder="Benutzername" value="{{ form_data.get('username', '') }}" required>
+<div class="auth-container">
+    <form class="auth-form" action="" method="post">
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder="Benutzername" value="{{ form_data.get('username', '') }}" class="form-input" required>
+        </div>
         
-        <input type="email" name="email" id="email" placeholder="Email Adresse" value="{{ form_data.get('email', '') }}" required>
-        <input type="email" name="email-check" id="email-check" placeholder="Email Adresse wiederholen" value="{{ form_data.get('email-check', '') }}" required>
+        <div class="form-group">
+            <input type="email" name="email" id="email" placeholder="E-Mail-Adresse" value="{{ form_data.get('email', '') }}" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <input type="email" name="email-check" id="email-check" placeholder="E-Mail-Adresse wiederholen" value="{{ form_data.get('email-check', '') }}" class="form-input" required>
+        </div>
         
-        <input type="password" name="password" id="password" placeholder="Passwort" required>
-        <input type="password" name="password-check" id="password-check" placeholder="Passwort wiederholen" required>        
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Passwort" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password-check" id="password-check" placeholder="Passwort wiederholen" class="form-input" required>        
+        </div>
         
-        <input type="checkbox" id="agb" name="agb" value="agb-accepted" required>
-        <label for="agb">Ich habe die <a href="/agb">AGB</a> gelesen und akzeptiert</label>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="agb" name="agb" value="agb-accepted" required>
+            <label for="agb">Ich habe die <a href="/agb" class="text-link">AGB</a> gelesen und akzeptiert</label>
+        </div>
         
-        <input type="checkbox" id="dsgvo" name="dsgvo" value="dsgvo-accepted" required>
-        <label for="dsgvo">Ich habe die <a href="/dsgvo">DSGVO</a> gelesen und akzeptiert</label>
+        <div class="form-group checkbox-group">
+            <input type="checkbox" id="dsgvo" name="dsgvo" value="dsgvo-accepted" required>
+            <label for="dsgvo">Ich habe die <a href="/dsgvo" class="text-link">DSGVO</a> gelesen und akzeptiert</label>
+        </div>
         
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         
-        <button type="submit">Registrieren</button>
+        <button type="submit" class="btn btn-primary btn-full">Account erstellen</button>
     </form>
+</div>
 {% endblock content %}
