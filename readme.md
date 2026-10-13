@@ -125,8 +125,4 @@ Die Anwendung ist anschließend im Browser unter `http://localhost:5000` erreich
 - [ ] Klassenbasierte Views (`Flask MethodView`)
 - [ ] Freigabe-Links und Berechtigungsmanagement für Dateien
 
----
 
-## 📄 Lizenz
-
-Dieses Projekt ist unter der [MIT License](LICENSE) lizenziert.
