@@ -11,3 +11,4 @@ for (let i = 0; i < 550; i++) {
     shadows.push(`${x}px ${y}px 0.5px ${randomColor}`);
 }
 starfield.style.boxShadow = shadows.join(', ');
+

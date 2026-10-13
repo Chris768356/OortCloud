@@ -86,12 +86,13 @@ def register():
                 agb = True
                 dsgvo = True
                 base_path = current_app.config.get("BASE_UPLOAD_FOLDER")
+                os.makedirs(base_path, exist_ok=True)
                 directory_id = uuid.uuid4().hex
                 new_user = User(username = username, email = email, directory_uuid = directory_id, agb_accepted = agb, dsgvo_accepted = dsgvo)
                 new_user.set_password(password)
                 db.session.add(new_user)
                 path = os.path.join(base_path, directory_id)
-                os.makedirs(path, exist_ok= True)
+                os.makedirs(path, exist_ok = True)
                 db.session.commit()
                 
 

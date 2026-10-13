@@ -12,4 +12,4 @@ class File(db.Model):
     file_size = db.Column(db.BigInteger, nullable = False)
     uploaded_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc), onupdate = lambda: datetime.now(timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False ,index=True)

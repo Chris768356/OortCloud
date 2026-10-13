@@ -33,7 +33,7 @@ cloud_data/
 # =========================
 .env
 .flaskenv
-
+docker-compose.override.yml
 # =========================
 # OS & IDEs
 # =========================

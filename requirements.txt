@@ -1,22 +1,33 @@
-# ==========================================
-# CloudApp - Productive Requirements
-# ==========================================
-
-# --- Web Framework & Server ---
+alembic==1.18.5
+blinker==1.9.0
+boto3==1.34.135
+botocore==1.34.162
+click==8.4.2
+Deprecated==1.3.1
 Flask==3.0.3
-Werkzeug==3.0.3
-gunicorn==22.0.0            
-
-# --- Authentication & Security ---
+Flask-Limiter==4.1.1
 Flask-Login==0.6.3
-Flask-WTF==1.2.1
-
-# --- Database & ORM ---
+Flask-Migrate==4.1.0
 Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.1
+greenlet==3.5.3
+gunicorn==22.0.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+jmespath==1.1.0
+limits==5.8.0
+Mako==1.3.12
+MarkupSafe==3.0.3
+ordered-set==4.1.0
+packaging==26.2
 PyMySQL==1.1.0
-Flask-Migrate
-# --- Cloud Storage (MinIO / S3) ---
-# boto3==1.34.135
-
-# --- Configuration ---
+python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+s3transfer==0.10.4
+six==1.17.0
+SQLAlchemy==2.0.51
+typing_extensions==4.16.0
+urllib3==2.7.0
+Werkzeug==3.0.3
+wrapt==2.2.2
+WTForms==3.2.2

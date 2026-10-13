@@ -1,112 +1,132 @@
-# ☁️ OortCloud
+# OortCloud ☁️
 
-![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
-![Flask](https://img.shields.io/badge/flask-%23000.svg?logo=flask&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?logo=mysql&logoColor=white)
-![Status](https://img.shields.io/badge/status-in%20development-success)
-
-OortCloud ist eine hochsichere, minimalistische Cloud-Speicher-Webapplikation. Sie ermöglicht authentifizierten Nutzern einen isolierten und privaten Speicherraum zum Hochladen, Verwalten und Teilen von Dateien. Ein zentraler Fokus der Architektur liegt auf strenger Datentrennung, Netzwerksicherheit und performanter Datenbankmodellierung.
-
-> **Hinweis:** Dies ist ein Portfolio-Projekt zur Demonstration von Backend-Architektur, sicherem Datei-Handling und relationaler Datenbankmodellierung.
+OortCloud ist eine leichtgewichtige, selbst gehostete Cloud-Speicher-Webanwendung auf Basis von Python (Flask) und MariaDB. Die Anwendung ist vollständig containerisiert und bietet sowohl eine produktionsreife Basis als auch ein flexibles Setup für die lokale Entwicklung.
 
 ---
 
-## ✨ Features
+## 🚀 Features
 
-* **Sichere Datei-Isolierung:** Jeder Nutzer erhält ein physisch getrenntes Verzeichnis auf dem Server. Die Auslieferung erfolgt maskiert über UUIDv4-Token – physische Dateipfade werden niemals an den Client gesendet (Schutz vor IDOR-Angriffen).
-* **Account-Management:** Sichere Authentifizierung, gehashte Passwörter (Werkzeug Security) und eine DSGVO-konforme Löschfunktion (Automatisches Cascading in der Datenbank + vollständige physische Bereinigung des Nutzerverzeichnisses).
-* **Admin-Panel:** Rollenbasiertes Zugriffssystem (RBAC) zur Verwaltung von Nutzern und System-Ressourcen.
-* **Sicherheits-Fokus:** Implementierung strenger OWASP-Richtlinien (CSP, X-Frame-Options, Cache-Control, Dateinamen-Sanitization).
-
----
-
-## 🛠️ Technologie-Stack
-
-* **Backend:** Python 3, Flask (Application Factory Pattern)
-* **Datenbank:** MySQL / MariaDB (InnoDB)
-* **ORM & Migrationen:** SQLAlchemy, Flask-Migrate (Alembic), PyMySQL
-* **Frontend:** HTML5, CSS3, Jinja2, Font Awesome
+- **Benutzerverwaltung:** Sichere Registrierung und Authentifizierung von Benutzern.
+- **Dateiverwaltung & Uploads:** Persönliche Dateiablage mit dynamischer Erstellung benutzerspezifischer Speicherordner (*Just-in-Time Provisioning*).
+- **Persistente Datenhaltung:** Vollständige Trennung von Anwendungslogik und Datenbankdaten über Docker-Volumes.
+- **Docker-native Architektur:** Multi-Container-Setup für Webserver und Datenbank.
+- **Entwickler-Workflow:** Unterstützung für Live-Reload und Bind-Mounts via Docker Compose Override.
 
 ---
 
-## 🔒 Sicherheitsarchitektur
+## 🛠️ Tech Stack
 
-Das System implementiert proaktiv Schutzmaßnahmen auf Netzwerk- und Applikationsebene:
-
-1. **HTTP Security Headers:** Strikte `Content-Security-Policy` (CSP) und `X-Frame-Options` blockieren XSS und Clickjacking.
-2. **Cache-Control:** Geschützte Routen senden `no-store, no-cache, must-revalidate`, um unautorisierten Zugriff über den Browser-Verlauf nach dem Logout zu verhindern.
-3. **Path Traversal Prevention:** Uploads werden serverseitig über `werkzeug.utils.secure_filename` bereinigt.
-
----
-
-## 🚀 Lokales Setup & Installation
-
-Folge diesen Schritten, um das Projekt lokal in einer Entwicklungsumgebung (z.B. mit XAMPP für MySQL) auszuführen.
-
-### 1. Repository klonen
-```bash
-git clone https://github.com/Chris768356/OortCloud.git
-cd OortCloud
-```
-
-### 2. Virtuelle Umgebung einrichten
-```bash
-python -m venv venv
-
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-```
-
-### 3. Abhängigkeiten installieren
-```bash
-pip install -r requirements.txt
-pip install pymysql cryptography
-```
-
-### 4. Umgebungsvariablen konfigurieren
-Erstelle eine `.env`-Datei im Hauptverzeichnis und füge deine Datenbank-Credentials sowie den Flask Secret Key hinzu:
-```env
-SQLALCHEMY_DATABASE_URI=mysql+pymysql://DEIN_DB_USER:DEIN_DB_PASSWORT@localhost:3306/oortcloud
-SECRET_KEY=dein_sehr_sicherer_geheimer_schluessel
-UPLOAD_FOLDER=cloud_data/
-```
-
-### 5. Datenbank initialisieren & migrieren
-*(Wichtig: Die Zieldatenbank `oortcloud` muss in deinem MySQL-Server bereits leer existieren)*
-```bash
-flask db init
-flask db migrate -m "Initiale MySQL Migration"
-flask db upgrade
-```
-
-### 6. Entwicklungsserver starten
-```bash
-flask run
-```
-Die Anwendung ist nun unter `http://127.0.0.1:5000` erreichbar.
+- **Backend:** Python, Flask
+- **WSGI / Webserver:** Gunicorn (Produktion), Flask Dev-Server (Entwicklung)
+- **Datenbank:** MariaDB
+- **Containerisierung:** Docker, Docker Compose
 
 ---
 
-## 📂 Projektstruktur (Auszug)
+## 📁 Projektstruktur
 
 ```text
-OortCloud/
-├── app/                    # Flask Application Factory & Blueprints
-│   ├── auth.py             # Login, Registrierung, Session-Management
-│   ├── dashboard.py        # Datei-Upload, Download, Löschung
-│   ├── models.py           # SQLAlchemy Datenbank-Modelle (User, File)
-│   ├── templates/          # Jinja2 HTML-Templates
-│   └── static/             # CSS und SVG-Assets (OortCloud Logo)
-├── migrations/             # Alembic Datenbank-Baupläne
-├── .gitignore              # Ausschluss von .env, .venv, *.db, Upload-Ordnern
-├── requirements.txt        # Python Abhängigkeiten
-└── app.py                  # App-Entrypoint
+oortcloud/
+├── CloudApp/                   # Haupt-Anwendungspaket (Application Factory)
+│   ├── models/                 # Datenbankmodelle
+│   ├── routes/                 # Blueprints & Endpunkte
+│   │   ├── admin.py            # Admin-Routen
+│   │   ├── auth.py             # Login & Registrierung
+│   │   ├── dashboard.py        # Dateiverwaltung & Uploads
+│   │   └── profile.py          # Benutzereinstellungen
+│   ├── services/               # Geschäftslogik & Helfer
+│   │   ├── utils.py            # Hilfsfunktionen
+│   │   └── validate.py         # Validierungslogik
+│   ├── static/                 # Statische Dateien (CSS, JS, Assets)
+│   ├── templates/              # Jinja2-HTML-Templates
+│   ├── __init__.py             # Factory-Funktion (create_app)
+│   ├── config.py               # Konfigurationsprofile
+│   └── extensions.py           # Erweiterungen (db, migrate, login_manager)
+├── instance/                   # Lokale Instanzdaten
+├── migrations/                 # Alembic-/Flask-Migrate-Dateien
+├── uploads/                    # Benutzerverzeichnisse & hochgeladene Dateien
+├── .dockerignore               # Ausschlussdateien für den Docker-Build
+├── .env.example                # Vorlage für Umgebungsvariablen
+├── .gitignore                  # Git-Ausschlussregeln
+├── app.py                      # Einstiegspunkt zum Starten der Anwendung
+├── Dockerfile                  # Produktions-Image (mit Gunicorn)
+├── docker-compose.yml          # Basis-Dienste (Flask App & MariaDB)
+├── README.md                   # Projektdokumentation
+└── requirements.txt            # Python-Abhängigkeiten
 ```
+---
+
+## ⚙️ Voraussetzungen
+
+- [Docker Engine](https://docs.docker.com/engine/install/) (Version 24.x oder neuer)
+- [Docker Compose](https://docs.docker.com/compose/) (V2)
+- Git
 
 ---
 
-## 👨‍💻 Autor
-**Christopher Neumann**  
-Angehender Fachinformatiker für Anwendungsentwicklung
+## 🚦 Schnellstart
+
+### 1. Repository klonen
+
+```bash
+git clone https://github.com/Chris768356/OortCloud.git
+cd oortcloud
+```
+
+### 2. Umgebungsvariablen konfigurieren
+
+Erstelle eine `.env`-Datei auf Basis der Vorlage:
+
+```bash
+cp .env.example .env
+```
+
+Passe die Variablen in `.env` an deine lokalen Einstellungen an:
+
+```ini
+DB_ROOT_PASSWORD=dein_geheimes_root_passwort
+DB_PASSWORD=dein_datenbank_passwort
+UPLOAD_FOLDER=/app/uploads
+SECRET_KEY=ein_zufaelliger_geheimer_schluessel
+```
+
+### 3. Container starten
+
+```bash
+docker compose up -d --build
+```
+
+Die Anwendung ist anschließend im Browser unter `http://localhost:5000` erreichbar.
+
+---
+
+
+### Nützliche Befehle
+
+- **Logs einsehen:**
+  ```bash
+  docker compose logs -f web
+  ```
+- **Container stoppen:**
+  ```bash
+  docker compose down
+  ```
+- **Datenbank-Shell öffnen:**
+  ```bash
+  docker compose exec db mariadb -u oortcloud_user -p oortcloud_db
+  ```
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Refactoring zu einer modularen, objektorientierten Architektur (OOP)
+- [ ] Implementierung von Service-Klassen (`StorageManager`, `UserManager`)
+- [ ] Klassenbasierte Views (`Flask MethodView`)
+- [ ] Freigabe-Links und Berechtigungsmanagement für Dateien
+
+---
+
+## 📄 Lizenz
+
+Dieses Projekt ist unter der [MIT License](LICENSE) lizenziert.
