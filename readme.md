@@ -5,10 +5,6 @@
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?logo=mysql&logoColor=white)
 ![Status](https://img.shields.io/badge/status-in%20development-success)
 
-![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
-![Flask](https://img.shields.io/badge/flask-%23000.svg?logo=flask&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?logo=mysql&logoColor=white)
-![Status](https://img.shields.io/badge/status-in%20development-success)
 
 OortCloud ist eine leichtgewichtige, selbst gehostete Cloud-Speicher-Webanwendung auf Basis von Python (Flask) und MariaDB. Die Anwendung folgt einer sauberen Service-Layer-Architektur, ist vollständig containerisiert und bietet sowohl eine produktionsreife Basis als auch ein flexibles Setup für die lokale Entwicklung.
 
