@@ -2,7 +2,7 @@ from CloudApp.extensions import db ,login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
-
+import uuid
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 
@@ -10,7 +10,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique = True, nullable = False)
     email = db.Column(db.String(254), unique = True, nullable = False)
     password_hash = db.Column(db.String(255), nullable = False)
-    directory_uuid = db.Column(db.String(50), unique = True)
+    directory_uuid = db.Column(db.String(50), unique = True, nullable = False, default = lambda: uuid.uuid4().hex)
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc), onupdate = lambda: datetime.now(timezone.utc))
     files = db.relationship('File', backref='user', cascade="all, delete-orphan")
