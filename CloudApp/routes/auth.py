@@ -44,60 +44,53 @@ def register():
             flash("Der Benutzername muss zwischen 3 und 50 Zeichen lang sein.", "error")
             return render_template("auth/register.html", form_data = form_data)
 
-        elif len(email) > 254:
+        if len(email) > 254:
             flash("Die E-Mail-Adresse ist zu lang.", "error")
             return render_template("auth/register.html", form_data = form_data)
 
-        elif len(password) > 128:
+        if len(password) > 128:
             flash("Das Passwort darf maximal 128 Zeichen lang sein.", "error")
             return render_template("auth/register.html", form_data = form_data)
         
-        elif agb != "abg-accepted" and dsgvo != "dsgvo-accepted":
-            flash("Bitte die AGB und die DSGVO akzeptieren!")
+        if agb != "agb-accepted" or dsgvo != "dsgvo-accepted":
+            flash("Bitte die AGB und die DSGVO akzeptieren!" , "error")
             return render_template("auth/register.html", form_data = form_data)
         
-        elif not validate_email(email):
+        if not validate_email(email):
             flash("Bitte geben Sie eine gültige E-Mail-Adresse im Format beispiel@domain.de ein.", "error")
             return render_template("auth/register.html", form_data = form_data)
         
-        elif email != email_check:
+        if email != email_check:
             flash("Ihre Email Adressen stimmen nicht überein!", "error")
             return render_template("auth/register.html", form_data = form_data)
         
-        elif not validate_password(password):
+        if not validate_password(password):
             flash("Das Passwort muss mindestens 12 Zeichen, einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten!", "error")
             return render_template("auth/register.html", form_data = form_data)
         
-        elif password != password_check:
+        if password != password_check:
             flash("Die eingegebenen Passwörter stimmen nicht überein", "error")
             return render_template("auth/register.html", form_data = form_data) 
         
-        elif check_user(username):
+        if check_user(username):
             flash("Dieser Benutzername ist bereits vergeben.", "error")
             return render_template("auth/register.html", form_data=form_data)
         
-        else:
-        
-            if check_user(username) or check_mail(email):
-                generate_password_hash(password)
-                #Wenn die E-Mail vergeben ist, Nachricht versenden um auf den registrier versuch aufmerksam zu machen
-            
-            else:
-                agb = True
-                dsgvo = True
-                base_path = current_app.config.get("BASE_UPLOAD_FOLDER")
-                os.makedirs(base_path, exist_ok=True)
-                directory_id = uuid.uuid4().hex
-                new_user = User(username = username, email = email, directory_uuid = directory_id, agb_accepted = agb, dsgvo_accepted = dsgvo)
-                new_user.set_password(password)
-                db.session.add(new_user)
-                path = os.path.join(base_path, directory_id)
-                os.makedirs(path, exist_ok = True)
-                db.session.commit()
                 
-
-            flash(f"Willkommen {username}! Danke für Ihre Registrierung!", "success")
-            return redirect(url_for("auth.login"))            
+        if check_user(username) or check_mail(email):
+            generate_password_hash(password)
+            #Wenn die E-Mail vergeben ist, Nachricht versenden um auf den registrier versuch aufmerksam zu machen
+        
+        else:
+            agb = True
+            dsgvo = True
+            new_user = User(username = username, email = email, agb_accepted = agb, dsgvo_accepted = dsgvo)
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            
+        flash(f"Willkommen {username}! Danke für Ihre Registrierung!", "success")
+        return redirect(url_for("auth.login"))            
 
 
     return render_template("auth/register.html", form_data={})
