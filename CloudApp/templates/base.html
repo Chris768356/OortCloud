@@ -11,7 +11,7 @@
       <ul class="nav-bar">
         <li><img src="../static/img/cloud_logo.png" alt="LOGO" class="nav-brand-logo"></li>
         <li><h1 class="nav-brand">OortCloud</h1></li>
-        <li><a href="/" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Startseite</a></li>
+        <li><a href="{{url_for('index')}}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Startseite</a></li>
         {% if current_user.is_authenticated %}
           <li><a href="{{url_for('dashboard.dashboard')}}" class="nav-link {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">Dashboard</a></li>
           <li><a href="{{url_for('profile.show_profile')}}" class="nav-link {% if request.endpoint == 'profile.show_profile' %}active{% endif %}">Mein Konto</a></li>

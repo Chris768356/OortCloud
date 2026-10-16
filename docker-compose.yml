@@ -1,6 +1,5 @@
 services:
   web:
-    
     build: .
     ports:
       - "5000:5000"
@@ -9,7 +8,8 @@ services:
     volumes:
       - ./uploads:/app/uploads
     depends_on:
-      - db
+      db:
+        condition: service_healthy    
     restart: unless-stopped
 
   db:
@@ -22,6 +22,11 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:

@@ -89,6 +89,9 @@ def create_app(test_config=None):
     
     from CloudApp.models.user import User
     from CloudApp.models.file import File
-
+    
+    with app.app_context():
+        db.create_all()
+    
     return app
 

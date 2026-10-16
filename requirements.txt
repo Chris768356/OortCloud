@@ -31,3 +31,4 @@ urllib3==2.7.0
 Werkzeug==3.0.3
 wrapt==2.2.2
 WTForms==3.2.2
+pytest
