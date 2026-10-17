@@ -1,6 +1,6 @@
 import io
 from werkzeug.datastructures import FileStorage
-from CloudApp.services.storage import StorageService
+from CloudApp.services.storage_service import StorageService
 
 def test_save_and_get_file(tmp_path):
   

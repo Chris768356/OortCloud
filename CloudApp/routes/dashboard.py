@@ -4,7 +4,7 @@ from CloudApp.extensions import limiter, db
 from sqlalchemy import func
 from sqlalchemy.exc import SQLAlchemyError
 from CloudApp.models.file import File
-from CloudApp.services.storage import StorageService
+from CloudApp.services.storage_service import StorageService
 import os
 
 dashboard_bp = Blueprint("dashboard",__name__)

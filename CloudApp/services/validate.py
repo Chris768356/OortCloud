@@ -1,4 +1,3 @@
-from flask import flash 
 from CloudApp.models.user import User
 from CloudApp.extensions import db
 import re
@@ -19,14 +18,3 @@ def validate_email(email):
         return True
     return False
 
-def check_user(username):
-        '''Prüft ob der Nutzername schon vergeben ist'''
-        stmt = db.select(User).filter_by(username=username)
-        check = db.session.execute(stmt).first() is not None
-        return check
-
-def check_mail(email):
-        '''Prüft ob die Email Adresse schon vergeben ist'''
-        stmt = db.select(User).filter_by(email = email)
-        check = db.session.execute(stmt).first() is not None
-        return check
